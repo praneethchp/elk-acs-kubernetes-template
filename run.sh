@@ -31,6 +31,7 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 echo "${BASED_PRIVATE_KEY}" | base64 -d | tee ${PRIVATE_KEY}
 chmod 400 ${PRIVATE_KEY}
 
+mkdir -p ~/.kube
 yes | scp -i ${PRIVATE_KEY} ${MASTER_USERNAME}@${MASTER_URL}:.kube/config ~/.kube/config
 
 # install helm
