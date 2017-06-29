@@ -18,8 +18,12 @@ PRIVATE_KEY='private_key'
 MASTER_URL=${MASTER_DNS}.${LOCATION}.cloudapp.azure.com
 
 # prerequisite
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 sudo apt-get update
-sudo apt-get install unzip
+apt-cache policy docker-ce
+sudo apt-get install -y unzip docker-ce
+
 
 # install kubectl
 cd /tmp
