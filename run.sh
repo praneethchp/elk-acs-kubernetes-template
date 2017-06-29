@@ -24,7 +24,6 @@ sudo apt-get update
 apt-cache policy docker-ce
 sudo apt-get install -y unzip docker-ce
 
-
 # install kubectl
 cd /tmp
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
