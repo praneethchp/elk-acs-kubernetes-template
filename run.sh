@@ -41,7 +41,7 @@ helm init
 REPO_URL='https://github.com/yaweiw/elk-acs-kubernetes-template/archive/develop.zip'
 
 curl -LO ${REPO_URL}
-unzip develop.zip -d template
+unzip -o develop.zip -d template
 cd template/elk-acs-kubernetes-template-develop/docker
 bash push-images.sh ${REGISTRY_NAME} ${REGISTRY_PASS}
 cd ../helm-charts
