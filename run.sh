@@ -27,7 +27,7 @@ chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 
 # write private key
-echo ${BASED_PRIVATE_KEY} | base64 -d | tee ${PRIVATE_KEY}
+echo "${BASED_PRIVATE_KEY}" | base64 -d | tee ${PRIVATE_KEY}
 chmod 400 ${PRIVATE_KEY}
 
 yes | scp -i ${PRIVATE_KEY} ${MASTER_USERNAME}@${MASTER_URL}:.kube/config ~/.kube/config
@@ -41,6 +41,6 @@ REPO_URL='https://github.com/yaweiw/elk-acs-kubernetes-template/archive/develop.
 
 curl -LO ${REPO_URL}
 unzip develop.zip -d template
-cd template
+cd template/elk-acs-kubernetes-template-develop
 bash docker/push-images.sh ${REGISTRY_NAME} ${REGISTRY_PASS}
 bash helm-charts/start-elk.sh ${REGISTRY_NAME} ${REGISTRY_PASS}
