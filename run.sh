@@ -9,6 +9,7 @@ REGISTRY_PASS=$6
 STORAGE_ACCOUNT=$7
 STORAGE_LOCATION=$8
 
+export REGISTRY_URL=${REGISTRY_NAME}.azurecr.io
 export STORAGE_ACCOUNT=$7
 export STORAGE_LOCATION=$8
 
@@ -41,6 +42,7 @@ REPO_URL='https://github.com/yaweiw/elk-acs-kubernetes-template/archive/develop.
 
 curl -LO ${REPO_URL}
 unzip develop.zip -d template
-cd template/elk-acs-kubernetes-template-develop
-bash docker/push-images.sh ${REGISTRY_NAME} ${REGISTRY_PASS}
-bash helm-charts/start-elk.sh ${REGISTRY_NAME} ${REGISTRY_PASS}
+cd template/elk-acs-kubernetes-template-develop/docker
+bash push-images.sh ${REGISTRY_NAME} ${REGISTRY_PASS}
+cd ../helm-charts
+bash start-elk.sh ${REGISTRY_NAME} ${REGISTRY_PASS}
