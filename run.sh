@@ -28,6 +28,8 @@ PRIVATE_KEY='private_key'
 
 MASTER_URL=${MASTER_DNS}.${LOCATION}.cloudapp.azure.com
 
+KUBECONFIG=/root/.kube/config
+
 # prerequisite
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -46,10 +48,8 @@ echo "${BASED_PRIVATE_KEY}" | base64 -d | tee ${PRIVATE_KEY}
 chmod 400 ${PRIVATE_KEY}
 
 mkdir -p $HOME/.kube
-scp -o StrictHostKeyChecking=no -i ${PRIVATE_KEY} ${MASTER_USERNAME}@${MASTER_URL}:.kube/config $HOME/.kube/config
-echo ~
-echo $HOME
-kubectl get nodes --kubeconfig=$HOME/.kube/config
+scp -o StrictHostKeyChecking=no -i ${PRIVATE_KEY} ${MASTER_USERNAME}@${MASTER_URL}:.kube/config $KUBECONFIG
+kubectl get nodes
 
 # install helm
 curl -s https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
