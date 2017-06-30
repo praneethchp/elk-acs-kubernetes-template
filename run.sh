@@ -45,10 +45,11 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 echo "${BASED_PRIVATE_KEY}" | base64 -d | tee ${PRIVATE_KEY}
 chmod 400 ${PRIVATE_KEY}
 
-mkdir -p ~/.kube
-scp -o StrictHostKeyChecking=no -i ${PRIVATE_KEY} ${MASTER_USERNAME}@${MASTER_URL}:.kube/config ~/.kube/config
-cat ~/.kube/config
-kubectl get nodes --kubeconfig=~/.kube/config
+mkdir -p $HOME/.kube
+scp -o StrictHostKeyChecking=no -i ${PRIVATE_KEY} ${MASTER_USERNAME}@${MASTER_URL}:.kube/config $HOME/.kube/config
+echo ~
+echo $HOME
+kubectl get nodes --kubeconfig=$HOME/.kube/config
 
 # install helm
 curl -s https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
