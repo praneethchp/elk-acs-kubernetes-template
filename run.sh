@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 MASTER_DNS=$1
 LOCATION=$2
 MASTER_USERNAME=$3
@@ -45,6 +47,7 @@ chmod 400 ${PRIVATE_KEY}
 
 mkdir -p ~/.kube
 scp -o StrictHostKeyChecking=no -i ${PRIVATE_KEY} ${MASTER_USERNAME}@${MASTER_URL}:.kube/config ~/.kube/config
+kubectl get nodes
 
 # install helm
 curl -s https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
