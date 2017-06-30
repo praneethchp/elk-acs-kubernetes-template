@@ -47,6 +47,7 @@ chmod 400 ${PRIVATE_KEY}
 
 mkdir -p ~/.kube
 scp -o StrictHostKeyChecking=no -i ${PRIVATE_KEY} ${MASTER_USERNAME}@${MASTER_URL}:.kube/config ~/.kube/config
+cat ~/.kube/config
 kubectl get nodes --kubeconfig=~/.kube/config
 
 # install helm
