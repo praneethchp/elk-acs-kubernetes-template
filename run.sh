@@ -28,7 +28,7 @@ PRIVATE_KEY='private_key'
 
 MASTER_URL=${MASTER_DNS}.${LOCATION}.cloudapp.azure.com
 
-KUBECONFIG=/root/.kube/config
+export KUBECONFIG=/root/.kube/config
 
 # prerequisite
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
