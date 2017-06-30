@@ -47,7 +47,7 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 echo "${BASED_PRIVATE_KEY}" | base64 -d | tee ${PRIVATE_KEY}
 chmod 400 ${PRIVATE_KEY}
 
-mkdir -p $HOME/.kube
+mkdir -p /root/.kube
 scp -o StrictHostKeyChecking=no -i ${PRIVATE_KEY} ${MASTER_USERNAME}@${MASTER_URL}:.kube/config $KUBECONFIG
 kubectl get nodes
 
