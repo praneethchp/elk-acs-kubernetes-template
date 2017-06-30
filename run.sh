@@ -9,6 +9,15 @@ REGISTRY_PASS=$6
 STORAGE_ACCOUNT=$7
 STORAGE_LOCATION=$8
 
+echo $1
+echo $2
+echo $3
+echo $4
+echo $5
+echo $6
+echo $7
+echo $8
+
 export REGISTRY_URL=${REGISTRY_NAME}.azurecr.io
 export STORAGE_ACCOUNT=$7
 export STORAGE_LOCATION=$8
