@@ -415,7 +415,7 @@
               ]
             },
             "protectedSettings": {
-              "commandToExecute": "[concat('bash run.sh ', variables('mastersEndpointDNSNamePrefix'), ' ', resourceGroup().location, ' ', parameters('linuxAdminUsername'), ' ', variables('basedPrivateKey'), ' ', variables('registryName'), ' ',  listCredentials(variables('registryName'), '2017-03-01').passwords[0].value, ' ', variables('dataStorageAccountName'), ' ', toLower(resourceGroup().location))]"
+              "commandToExecute": "[concat('bash run.sh ', variables('mastersEndpointDNSNamePrefix'), ' ', resourceGroup().location, ' ', parameters('linuxAdminUsername'), ' ', parameters('adminPassword'), ' ', variables('basedPrivateKey'), ' ', variables('registryName'), ' ',  listCredentials(variables('registryName'), '2017-03-01').passwords[0].value, ' ', variables('dataStorageAccountName'), ' ', toLower(resourceGroup().location))]"
             }
           }
         }
