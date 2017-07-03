@@ -80,18 +80,6 @@
         "description": "User name for the Linux Virtual Machines."
       }
     },
-    "orchestratorType": {
-      "type": "string",
-      "defaultValue": "Kubernetes",
-      "allowedValues": [
-        "Kubernetes",
-        "DCOS",
-        "Swarm"
-      ],
-      "metadata": {
-        "description": "The type of orchestrator used to manage the applications on the cluster."
-      }
-    },
     "masterCount": {
       "type": "int",
       "defaultValue": 1,
@@ -151,46 +139,33 @@
   "variables": {
     "adminUsername": "[parameters('linuxAdminUsername')]",
     "agentCount": "[parameters('agentCount')]",
-    "agentsEndpointDNSNamePrefix": "[concat(parameters('dnsNamePrefix'),'agents')]",
+    "agentsEndpointDNSNamePrefix": "[concat('agents-', parameters('dnsNamePrefix'))]",
     "agentVMSize": "[parameters('agentVMSize')]",
     "masterCount": "[parameters('masterCount')]",
-    "mastersEndpointDNSNamePrefix": "[concat(parameters('dnsNamePrefix'),'mgmt')]",
-    "orchestratorType": "[parameters('orchestratorType')]",
+    "mastersEndpointDNSNamePrefix": "[concat('master-', parameters('dnsNamePrefix'))]",
+    "orchestratorType": "Kubernetes",
     "sshRSAPublicKey": "[parameters('sshRSAPublicKey')]",
     "servicePrincipalClientId": "[parameters('servicePrincipalClientId')]",
     "servicePrincipalClientSecret": "[parameters('servicePrincipalClientSecret')]",
-    "useServicePrincipalDictionary": {
-      "DCOS": 0,
-      "Swarm": 0,
-      "Kubernetes": 1
-    },
-    "useServicePrincipal": "[variables('useServicePrincipalDictionary')[variables('orchestratorType')]]",
-    "servicePrincipalFields": [
-      null,
-      {
-        "ClientId": "[parameters('servicePrincipalClientId')]",
-        "Secret": "[parameters('servicePrincipalClientSecret')]"
-      }
-    ],
-    "controllerDNSNamePrefix": "[concat(parameters('dnsNamePrefix'),'ctl')]",
-    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'salinuxvm')]",
+    "controllerDNSNamePrefix": "[concat('control', parameters('dnsNamePrefix'))]",
+    "storageAccountName": "[concat('ctl-', uniquestring(resourceGroup().id))]",
     "imagePublisher": "Canonical",
     "imageOffer": "UbuntuServer",
-    "nicName": "myVMNic",
+    "nicName": "controller-nic",
     "addressPrefix": "10.0.0.0/16",
     "subnetName": "Subnet",
     "subnetPrefix": "10.0.0.0/24",
     "storageAccountType": "Standard_LRS",
-    "publicIPAddressName": "myPublicIP",
+    "publicIPAddressName": "controller-ip",
     "publicIPAddressType": "Dynamic",
-    "vmName": "ControllerNode",
+    "vmName": "controller-vm",
     "vmSize": "Standard_A1",
-    "virtualNetworkName": "MyVNET",
+    "virtualNetworkName": "controller-vnet",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-    "dataStorageAccountName": "[concat(uniquestring(resourceGroup().id), 'data')]",
-    "registryName": "[concat(uniquestring(resourceGroup().id), 'elkimage')]",
-    "registryDisk": "[concat(uniquestring(resourceGroup().id), 'elkdisk')]",
+    "dataStorageAccountName": "[concat('data-', uniquestring(resourceGroup().id))]",
+    "registryName": "[concat('registry-', uniquestring(resourceGroup().id))]",
+    "registryDisk": "[concat('elkimage-', uniquestring(resourceGroup().id))]",
     "basedPrivateKey": "[parameters('privateKey')]"
   },
   "resources": [
@@ -411,11 +386,11 @@
             "autoUpgradeMinorVersion": true,
             "settings": {
               "fileUris": [
-                "https://raw.githubusercontent.com/yaweiw/elk-acs-kubernetes-template/develop/run.sh"
+                "https://raw.githubusercontent.com/yaweiw/elk-acs-kubernetes-template/rc/scripts/run.sh"
               ]
             },
             "protectedSettings": {
-              "commandToExecute": "[concat('bash run.sh ', variables('mastersEndpointDNSNamePrefix'), ' ', resourceGroup().location, ' ', parameters('linuxAdminUsername'), ' ', parameters('adminPassword'), ' ', variables('basedPrivateKey'), ' ', variables('registryName'), ' ',  listCredentials(variables('registryName'), '2017-03-01').passwords[0].value, ' ', variables('dataStorageAccountName'), ' ', toLower(resourceGroup().location))]"
+              "commandToExecute": "[concat('bash run.sh ', variables('mastersEndpointDNSNamePrefix'), ' ', resourceGroup().location, ' ', parameters('linuxAdminUsername'), ' ', parameters('adminPassword'), ' ', variables('basedPrivateKey'), ' ', variables('registryName'), ' ',  listCredentials(variables('registryName'), '2017-03-01').passwords[0].value, ' ', variables('dataStorageAccountName'))]"
             }
           }
         }
