@@ -3,7 +3,7 @@
 set -e
 
 MASTER_DNS=$1
-LOCATION=$2
+RESOURCE_LOCATION=$2
 MASTER_USERNAME=$3
 NGINX_PASSWORD=$4
 BASED_PRIVATE_KEY=$5
@@ -12,11 +12,11 @@ REGISTRY_PASS=$7
 
 export REGISTRY_URL=${REGISTRY_NAME}.azurecr.io
 export STORAGE_ACCOUNT=$8
-export STORAGE_LOCATION=$9
+export STORAGE_LOCATION=${RESOURCE_LOCATION}
 
 PRIVATE_KEY='private_key'
 
-MASTER_URL=${MASTER_DNS}.${LOCATION}.cloudapp.azure.com
+MASTER_URL=${MASTER_DNS}.${RESOURCE_LOCATION}.cloudapp.azure.com
 
 export KUBECONFIG=/root/.kube/config
 
@@ -46,15 +46,15 @@ curl -s https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | b
 helm init
 
 # download templates
-REPO_URL='https://github.com/yaweiw/elk-acs-kubernetes-template/archive/develop.zip'
+REPO_URL='https://github.com/yaweiw/elk-acs-kubernetes-template/archive/rc.zip'
 
-curl -LO ${REPO_URL}
-unzip -o develop.zip -d template
+curl -L ${REPO_URL} -o template.zip
+unzip -o template.zip -d template
 
 # expose kubectl proxy
-cd template/elk-acs-kubernetes-template-develop
+cd template/elk-acs-kubernetes-template-rc
 echo ${NGINX_PASSWORD} | htpasswd -c -i /etc/nginx/.htpasswd ${MASTER_USERNAME}
-cp nginx-site.conf /etc/nginx/sites-available/default
+cp config/nginx-site.conf /etc/nginx/sites-available/default
 nohup kubectl proxy --port=8080 &
 systemctl reload nginx
 
