@@ -8,11 +8,11 @@ PASSWORD=$4
 
 docker login --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD} ${REGISTRY_SERVER}
 
-docker build -t ${registry_server}/elasticsearch:1.0.0 ./elasticsearch
-docker push ${registry_server}/elasticsearch:1.0.0
-docker build -t ${registry_server}/kibana:1.0.0 --build-arg USERNAME=${USERNAME} --build-arg PASSWORD=${PASSWORD} ./kibana
-docker push ${registry_server}/kibana:1.0.0
-docker build -t ${registry_server}/logstash:1.0.0 ./logstash
-docker push ${registry_server}/logstash:1.0.0
-docker build -t ${registry_server}/filebeat:1.0.0 ./filebeat
-docker push ${registry_server}/filebeat:1.0.0
+docker build -t ${REGISTRY_SERVER}/elasticsearch:1.0.0 ./elasticsearch
+docker push ${REGISTRY_SERVER}/elasticsearch:1.0.0
+docker build -t ${REGISTRY_SERVER}/kibana:1.0.0 --build-arg USERNAME=${USERNAME} --build-arg PASSWORD=${PASSWORD} ./kibana
+docker push ${REGISTRY_SERVER}/kibana:1.0.0
+docker build -t ${REGISTRY_SERVER}/logstash:1.0.0 ./logstash
+docker push ${REGISTRY_SERVER}/logstash:1.0.0
+docker build -t ${REGISTRY_SERVER}/filebeat:1.0.0 ./filebeat
+docker push ${REGISTRY_SERVER}/filebeat:1.0.0
