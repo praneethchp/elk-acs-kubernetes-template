@@ -60,6 +60,6 @@ systemctl reload nginx
 
 # push image & helm install 
 cd docker
-bash push-images.sh ${REGISTRY_NAME} ${REGISTRY_PASS}
+bash push-images.sh ${REGISTRY_NAME} ${REGISTRY_PASS} ${MASTER_USERNAME} ${NGINX_PASSWORD}
 cd ../helm-charts
 bash start-elk.sh ${REGISTRY_NAME} ${REGISTRY_PASS}

@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
-registry_server=$1.azurecr.io
-registry_username=$1
-registry_password=$2
+REGISTRY_SERVER=$1.azurecr.io
+REGISTRY_USERNAME=$1
+REGISTRY_PASSWORD=$2
+USERNAME=$3
+PASSWORD=$4
 
-docker login --username ${registry_username} --password ${registry_password} ${registry_server}
+docker login --username ${REGISTRY_USERNAME} --password ${REGISTRY_PASSWORD} ${REGISTRY_SERVER}
 
 docker build -t ${registry_server}/elasticsearch:1.0.0 ./elasticsearch
 docker push ${registry_server}/elasticsearch:1.0.0
-docker build -t ${registry_server}/kibana:1.0.0 ./kibana
+docker build -t ${registry_server}/kibana:1.0.0 --build-arg USERNAME=${USERNAME} --build-arg PASSWORD=${PASSWORD} ./kibana
 docker push ${registry_server}/kibana:1.0.0
 docker build -t ${registry_server}/logstash:1.0.0 ./logstash
 docker push ${registry_server}/logstash:1.0.0
