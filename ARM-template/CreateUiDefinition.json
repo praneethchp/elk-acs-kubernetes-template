@@ -7,7 +7,7 @@
             {
                 "name": "userName",
                 "type": "Microsoft.Compute.UserNameTextBox",
-                "label": "Controller User name",
+                "label": "Controller Username",
                 "defaultValue": "",
                 "toolTip": "Username for accessing Kubernetes cluster and Kibana. Must be a valid Ubuntu username.",
                 "constraints": {
