@@ -7,13 +7,13 @@
             {
                 "name": "userName",
                 "type": "Microsoft.Compute.UserNameTextBox",
-                "label": "User name",
+                "label": "Controller Username",
                 "defaultValue": "",
-                "toolTip": "Specify a username for accessing the controller node of the cluster. Must be a valid Ubuntu username",
+                "toolTip": "Username for accessing Kubernetes cluster and Kibana. Must be a valid Ubuntu username.",
                 "constraints": {
                     "required": true,
                     "regex": "^(?!(?:adm|admin|audio|backup|bin|cdrom|crontab|daemon|dialout|dip|disk|fax|floppy|fuse|games|gnats|irc|kmem|landscape|libuuid|list|lp|mail|man|messagebus|mlocate|netdev|news|nobody|nogroup|operator|plugdev|proxy|root|sasl|shadow|src|ssh|sshd|staff|sudo|sync|sys|syslog|tape|tty|users|utmp|uucp|video|voice|whoopsie|www\\-data)$)\\w+$",
-                    "validationMessage": "Username must not be a reserved Ubuntu username"
+                    "validationMessage": "Username must not be a reserved Ubuntu username."
                 },
                 "osPlatform": "Linux",
                 "visible": true
@@ -22,14 +22,14 @@
                 "name": "password",
                 "type": "Microsoft.Common.PasswordBox",
                 "label": {
-                    "password": "Password",
-                    "confirmPassword": "Confirm Password"
+                    "password": "Controller Password",
+                    "confirmPassword": "Confirm Controller Password"
                 },
-                "toolTip": "Default password for Kubernetes cluster portal, controllor node, Kibana, etc",
+                "toolTip": "Default password for accessing Kubernetes cluster and Kibana.",
                 "constraints": {
                     "required": true,
                     "regex": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-\\.]).{8,}$",
-                    "validationMessage": "Password must at least 8 characters long and contain lower case, upper case, digit and special character."
+                    "validationMessage": "Password must be at least 8 characters long and contain at least one lower case, upper case, digit and special character."
                 },
                 "visible": true
             }
@@ -47,9 +47,9 @@
                     {
                         "name": "dnsNamePrefix",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "Dns name prefix",
+                        "label": "Dns prefix",
                         "defaultValue": "",
-                        "toolTip": "Dns prefix for all components, some random value will be appended to be unique",
+                        "toolTip": "Dns prefix for Controller and Kubernetes.",
                         "constraints": {
                             "required": true
                         },
@@ -58,19 +58,19 @@
                 ]
             },
             {
-                "name": "acsSettings",
-                "label": "ACS Settings",
+                "name": "k8sSettings",
+                "label": "Kubernetes Cluster Settings",
                 "subLabel": {
                     "preValidation": "Required",
                     "postValidation": "Done"
                 },
-                "bladeTitle": "ACS Settings",
+                "bladeTitle": "Kubernetes Cluster Settings",
                 "elements": [
                     {
                         "name": "agentCount",
                         "type": "Microsoft.Common.DropDown",
                         "label": "Agent Count",
-                        "toolTip": "The number of agents for the cluster.  This value can be from 1 to 100 (note, for Kubernetes clusters you will also get 1 or 2 public agents in addition to these seleted masters)",
+                        "toolTip": "The number of agent nodes of Kubernetes cluster.",
                         "defaultValue": "1",
                         "constraints": {
                             "allowedValues": [
@@ -481,8 +481,8 @@
                     {
                         "name": "agentVMSize",
                         "type": "Microsoft.Compute.SizeSelector",
-                        "label": "Size of Agent Node",
-                        "toolTip": "Agent Node in Kubernetes Size",
+                        "label": "Agent Node Size",
+                        "toolTip": "VM size of agent node.",
                         "recommendedSizes": [
                             "Standard_D1_v2",
                             "Standard_D2_v2",
@@ -540,14 +540,14 @@
                             ]
                         },
                         "osPlatform": "Linux",
-                        "count": "[steps('acsSettings').agentCount]",
+                        "count": "[steps('k8sSettings').agentCount]",
                         "visible": true
                     },
                     {
                         "name": "masterCount",
                         "type": "Microsoft.Common.DropDown",
                         "label": "Master Count",
-                        "toolTip": "The number of master for the cluster.  This value can be 1, 3, 5",
+                        "toolTip": "The number of master nodes of Kubernetes cluster. This value can only be 1, 3 or 5.",
                         "defaultValue": "1",
                         "constraints": {
                             "allowedValues": [
@@ -582,13 +582,13 @@
                         "name": "sshRSAPublicKey",
                         "osPlatform": "Linux",
                         "label": {
-                            "authenticationType": "Authentication type",
-                            "password": "Password",
-                            "confirmPassword": "Confirm password",
-                            "sshPublicKey": "RSA public key"
+                            "authenticationType": "",
+                            "password": "",
+                            "confirmPassword": "",
+                            "sshPublicKey": "SSH public key"
                         },
                         "toolTip": {
-                            "sshPublicKey": "Public key for ACS cluster setup"
+                            "sshPublicKey": "SSH public key for Controller communicating with Kubernetes cluster."
                         },
                         "type": "Microsoft.Compute.CredentialsCombo",
                         "constraints": {
@@ -602,8 +602,8 @@
                     {
                         "name": "privateKey",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "Base64 RSA Private Key",
-                        "toolTip": "The corresbonding private key in base64 encoded.",
+                        "label": "Base64 encoded SSH private key",
+                        "toolTip": "SSH private key for Controller communicating with Kubernetes cluster. The key must be base64 encoded.",
                         "constraints": {
                             "required": true
                         },
@@ -613,7 +613,7 @@
                         "name": "servicePrincipalClientId",
                         "type": "Microsoft.Common.TextBox",
                         "label": "Service principal client ID",
-                        "toolTip": "The Client ID of the service principal that will be used with Kubernetes",
+                        "toolTip": "The Client ID of service principal object for accessing Azure resources.",
                         "constraints": {
                             "required": true
                         },
@@ -623,7 +623,7 @@
                         "name": "servicePrincipalClientSecret",
                         "type": "Microsoft.Common.TextBox",
                         "label": "Service principal client secret",
-                        "toolTip": "The Client Secret of the service principal that will be used with Kubernetes",
+                        "toolTip": "The Client Secret of the service principal object for accessing Azure resources.",
                         "constraints": {
                             "required": true
                         },
@@ -634,10 +634,10 @@
         ],
         "outputs": {
             "dnsNamePrefix": "[steps('commonSettings').dnsNamePrefix]",
-            "agentCount": "[steps('acsSettings').agentCount]",
-            "agentVMSize": "[steps('acsSettings').agentVMSize]",
+            "agentCount": "[steps('k8sSettings').agentCount]",
+            "agentVMSize": "[steps('k8sSettings').agentVMSize]",
             "linuxAdminUsername": "[basics('userName')]",
-            "masterCount": "[steps('acsSettings').masterCount]",
+            "masterCount": "[steps('k8sSettings').masterCount]",
             "sshRSAPublicKey": "[steps('securitySettings').sshRSAPublicKey.sshPublicKey]",
             "privateKey": "[steps('securitySettings').privateKey]",
             "servicePrincipalClientId": "[steps('securitySettings').servicePrincipalClientId]",
