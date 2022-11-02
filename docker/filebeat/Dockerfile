@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:kinetic-20220830
 
 ENV FILEBEAT_VERSION 5.4.1
 
