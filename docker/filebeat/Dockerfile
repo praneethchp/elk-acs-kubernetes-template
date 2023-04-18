@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:22.10
 
 ENV FILEBEAT_VERSION 5.4.1
 
