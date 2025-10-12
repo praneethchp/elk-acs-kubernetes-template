@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:24.04
 
 ENV FILEBEAT_VERSION 5.4.1
 
